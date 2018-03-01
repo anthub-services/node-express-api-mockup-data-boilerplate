@@ -1,0 +1,15 @@
+version: '2.1'
+services:
+  express_api:
+    build: .
+    image: express_api
+    user: node
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 7770:7770
+    environment:
+      - POSTGRES_HOST=database
+    env_file:
+      - .env

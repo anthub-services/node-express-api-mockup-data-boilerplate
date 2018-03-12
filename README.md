@@ -42,19 +42,20 @@ To manage separate Docker instance for API, open another terminal console and ru
 
 ### Docker
 
-| Command                                | Description                                      |
-|----------------------------------------|--------------------------------------------------|
-| `./bin/install`                        | Build the Docker container                       |
-| `./bin/start`                          | Start the service                                |
-| `./bin/stop`                           | Stop the service                                 |
-| `./bin/console <container ID or Name>` | Access the terminal console of the API container |
+| Command                                | Description                                                            |
+|----------------------------------------|------------------------------------------------------------------------|
+| `./bin/install`                        | Build the Docker container and start the app                           |
+| `./bin/reinstall`                      | Rebuild the Docker container with the current branch and start the app |
+| `./bin/start`                          | Start the service                                                      |
+| `./bin/stop`                           | Stop the service                                                       |
+| `./bin/console <container ID or Name>` | Access the terminal console of the API container                       |
 
 ## Users
 
 Use the following credentials to test different API responses. Default password for all accounts is `password`.
 
-- **Admin User:** `admin@email.com` - can access all applications
-- **Admin User witout Settings page:** `admin_no_settings@email.com` - no access on admin Settings page
+- **Super Admin User:** `superadmin@email.com` - can access all authetiticated paths and actions
+- **Admin User:** `admin@email.com` - no access on admin Settings page and Users actions (new, edit, and delete)
 - **User redirected to internal page:** `referrer@email.com` – when `redirect.url` is set without the domain,
 user shall be redirected to internal page if no location path (referrer) found on the Sign In page
 - **User redirected to external page:** `redirect@email.com` – when `redirect.external` and `redirect.url` are set,

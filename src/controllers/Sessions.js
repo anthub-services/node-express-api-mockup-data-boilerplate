@@ -11,7 +11,7 @@ export default {
       firstName: '',
       lastName: '',
       status: 'active',
-      redirect: {},
+      redirect: '',
       allowedPaths: [],
       excludedPaths: []
     }
@@ -20,7 +20,7 @@ export default {
 
     if (password === 'password') {
       switch (email) {
-        case 'admin@email.com':
+        case 'superadmin@email.com':
           user = {
             userId: 1,
             firstName: 'Super Admin',
@@ -28,7 +28,7 @@ export default {
             allowedPaths: ['*']
           }
           break
-        case 'admin_no_settings@email.com':
+        case 'admin@email.com':
           // No access settings page for admin user
           user = {
             userId: 2,
@@ -36,7 +36,9 @@ export default {
             lastName: 'User',
             status: 'active',
             allowedPaths: ['*'],
-            excludedPaths: ['/admin/settings']
+            excludedPaths: [
+              '/admin/users/delete'
+            ]
           }
           break
         case 'user@email.com':
@@ -45,7 +47,14 @@ export default {
             firstName: 'Common',
             lastName: 'User',
             status: 'active',
-            allowedPaths: ['/my-profile', '/admin', '/admin/dashboard']
+            allowedPaths: [
+              '/my-profile',
+              '/admin',
+              '/admin/dashboard',
+              '/admin/users',
+              '/admin/users/:userId',
+              '/admin/settings'
+            ]
           }
           break
         case 'referrer@email.com':
@@ -53,9 +62,13 @@ export default {
             userId: 4,
             firstName: 'Referrer',
             lastName: 'User',
-            // Internal redirection for users if no referrer found in the sign in page
-            redirect: { url: '/redux' },
-            allowedPaths: ['/my-profile', '/admin', '/admin/dashboard']
+            // Internal redirection (without domain) for users if no referrer found in the sign in page
+            redirect: '/redux',
+            allowedPaths: [
+              '/my-profile',
+              '/admin',
+              '/admin/dashboard'
+            ]
           }
           break
         case 'redirect@email.com':
@@ -63,9 +76,13 @@ export default {
             userId: 5,
             firstName: 'Redirect',
             lastName: 'User',
-            // External redirection for users if no referrer found in the sign in page
-            redirect: { external: true, url: 'https://github.com/rickyhurtado/node-api-mockup-data-boilerplate' },
-            allowedPaths: ['/my-profile', '/admin', '/admin/dashboard']
+            // External redirection (with http/https) for users if no referrer found in the sign in page
+            redirect: 'https://github.com/rickyhurtado/node-api-mockup-data-boilerplate',
+            allowedPaths: [
+              '/my-profile',
+              '/admin',
+              '/admin/dashboard'
+            ]
           }
           break
         case 'blocked@email.com':
@@ -115,9 +132,7 @@ function verifyToken(res, token) {
     token,
     process.env.JWT_SECRET,
     function(errors, decoded) {
-      if (errors) {
-        return res.status(401).end()
-      }
+      if (errors) return res.status(401).end()
 
       return decoded
     }

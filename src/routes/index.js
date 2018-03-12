@@ -10,6 +10,13 @@ export default (app) => {
   app.post('/sign-out', C.Sessions.signOut)
   app.get('/verify-token', C.Sessions.verifyToken)
 
+  /* Users */
+  app.get('/users', C.Users.list)
+  app.post('/users', C.Users.create)
+  app.put('/users/:userId', C.Users.update)
+  app.get('/users/:userId', C.Users.find)
+  app.delete('/users/:userId', C.Users.destroy)
+
   /* Tests */
   app.get('/tests', C.Tests.list)
   app.get('/tests/custom-method', C.Tests.customMethod) // Should be placed before other requests with dynamic values

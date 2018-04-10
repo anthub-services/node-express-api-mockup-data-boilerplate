@@ -1,7 +1,26 @@
 import JWT from 'jsonwebtoken'
 import _ from 'lodash'
+import { fetchData, pages } from '../helpers/Data'
+import data from '../data/Sessions'
 
 export default {
+  list(req, res) {
+    setTimeout(function() {
+      res.status(200).send({
+        rows: fetchData(req.query, {
+          data,
+          dateKey: 'createdAt',
+          sorted: { sessionId: 'desc' },
+          filtered: {
+            match: ['user', 'userAgent'],
+            objectKey: { user: 'name' }
+          }
+        }),
+        pages: pages(req.query)
+      })
+    }, 1000)
+  },
+
   authenticate(req, res) {
     const { email, password } = verifyToken(res, req.body.token)
     const invalidMessage = "The email or password you entered doesn't match any account."

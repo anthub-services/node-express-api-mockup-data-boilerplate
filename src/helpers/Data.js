@@ -60,12 +60,30 @@ function filterData({ filtered }, options) {
 
       if (filterKeys.length) {
         for (const key in d) {
-          const type = typeof(d[key])
-          const dataValue = d[key]
+          const type          = typeof(d[key])
           const filteredValue = decodeQueryString(filtered[key])
+          let   dataValue     = d[key]
 
           if (filtered[key]) {
-            if (type === 'number' && parseInt(filteredValue) !== dataValue)
+            if (_.indexOf(options.filtered.match, key) > -1) {
+              dataValue = type === 'object' ? dataValue[options.filtered.objectKey[key]] : dataValue
+
+              const filteredValues = filteredValue.toLowerCase()
+                                                  .split(' ')
+
+              const dataValues     = _.compact(dataValue.toLowerCase()
+                                                        .replace(/[&\/\\#,+()$~%'":*?<>{}]/g, ' ')
+                                                        .split(' '))
+
+              let found = true
+
+              filteredValues.map(value => {
+                if (found && _.indexOf(dataValues, value) < 0) found = false
+              })
+
+              if (!found) return false
+            }
+            else if (type === 'number' && parseInt(filteredValue) !== dataValue)
               return false
             else if (type === 'string' && filteredValue.toLowerCase() !== dataValue.toLowerCase())
               return false

@@ -6,6 +6,7 @@ export default (app) => {
   }))
 
   /* Sessions */
+  app.get('/sessions', C.Sessions.list)
   app.post('/sign-in', C.Sessions.authenticate)
   app.post('/sign-out', C.Sessions.signOut)
   app.get('/verify-token', C.Sessions.verifyToken)

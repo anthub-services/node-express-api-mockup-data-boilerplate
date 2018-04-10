@@ -6,8 +6,13 @@ export default {
   list(req, res) {
     setTimeout(function() {
       res.status(200).send({
-        rows: fetchData(req.query, { data, dateKey: 'createdAt', sorted: { userId: 'desc' } }),
-        pages: pages(req.body)
+        rows: fetchData(req.query, {
+          data,
+          dateKey: 'createdAt',
+          sorted: { userId: 'asc' },
+          filtered: { match: ['firstName', 'lastName'] }
+        }),
+        pages: pages(req.query)
       })
     }, 1000)
   },

@@ -1,13 +1,14 @@
 import JWT from 'jsonwebtoken'
 import _ from 'lodash'
-import { fetchData, pages } from '../helpers/Data'
+import * as Data from '../helpers/Data'
+import * as Session from '../helpers/Session'
 import data from '../data/Sessions'
 
 export default {
   list(req, res) {
     setTimeout(function() {
       res.status(200).send({
-        rows: fetchData(req.query, {
+        rows: Data.fetchData(req.query, {
           data,
           dateKey: 'createdAt',
           sorted: { sessionId: 'desc' },
@@ -16,13 +17,13 @@ export default {
             objectKey: { user: 'name' }
           }
         }),
-        pages: pages(req.query)
+        pages: Data.pages(req.query)
       })
     }, 1000)
   },
 
   authenticate(req, res) {
-    const { email, password } = verifyToken(res, req.body.token)
+    const { email, password } = verifyToken(res, req.body)
     const invalidMessage = "The email or password you entered doesn't match any account."
 
     let user = {
@@ -35,7 +36,7 @@ export default {
       excludedPaths: []
     }
     let status = 200
-    let data = {}
+    let responseData = {}
 
     if (password === 'password') {
       switch (email) {
@@ -113,25 +114,27 @@ export default {
           }
           status = 401
           // With custom message
-          data = { message: 'Your account is blocked. Please contact the administrator.' }
+          responseData = { message: 'Your account is blocked. Please contact the administrator.' }
           break
         default:
           status = 401
-          data = { message: invalidMessage }
+          responseData = { message: invalidMessage }
       }
 
       if (status === 200) {
+        const hash = Session.hash()
         const date = new Date()
-        const token = JWT.sign(_.merge({}, user, { date }), process.env.JWT_SECRET, { expiresIn: 86400 })
+        const token = JWT.sign({ userId: user.userId, date }, process.env.JWT_SECRET, { expiresIn: 86400 })
+        const data = JWT.sign(_.merge({}, user, { date }), hash[0], { expiresIn: 86400 })
 
-        data = _.merge({}, { token }, data, { redirect: user.redirect })
+        responseData = _.merge({}, { token }, { data }, { redirect: user.redirect, tkid: hash[1] })
       }
     } else {
       status = 401
-      data = { message: invalidMessage }
+      responseData = { message: invalidMessage }
     }
 
-    res.status(status).send(data)
+    res.status(status).send(responseData)
   },
 
   signOut(req, res) {
@@ -146,10 +149,12 @@ export default {
   }
 };
 
-function verifyToken(res, token) {
+function verifyToken(res, body) {
+  const { token, tkid } = body
+
   return JWT.verify(
     token,
-    process.env.JWT_SECRET,
+    Session.hash(tkid)[0],
     function(errors, decoded) {
       if (errors) return res.status(401).end()
 

@@ -20,7 +20,12 @@ Copy `.env.dist` to `.env` and change the values of the environment variables if
 PORT=7770
 ALLOW_ORIGIN=http://localhost:7771
 JWT_SECRET=jwtsecretcode
+HASH=sha1hash1.sha1hash2.sha1hash3
 ```
+
+NOTE: Generate random hashes and concatenate the hashes with “.”.
+The same hashes should also be used in the React client app.
+The more hashes, the better.
 
 Then run the following commands:
 
@@ -44,13 +49,13 @@ To manage separate Docker instance for API, open another terminal console and ru
 
 ### Docker
 
-| Command                                | Description                                                            |
-|----------------------------------------|------------------------------------------------------------------------|
-| `./bin/install`                        | Build the Docker container and start the app                           |
-| `./bin/reinstall`                      | Rebuild the Docker container with the current branch and start the app |
-| `./bin/start`                          | Start the service                                                      |
-| `./bin/stop`                           | Stop the service                                                       |
-| `./bin/console <container ID or Name>` | Access the terminal console of the API container                       |
+| Command                              | Description                                                            |
+|--------------------------------------|------------------------------------------------------------------------|
+| `bin/install`                        | Build the Docker container and start the app                           |
+| `bin/reinstall`                      | Rebuild the Docker container with the current branch and start the app |
+| `bin/start`                          | Start the service                                                      |
+| `bin/stop`                           | Stop the service                                                       |
+| `bin/console <container ID or Name>` | Access the terminal console of the API container                       |
 
 ## Users
 

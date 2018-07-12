@@ -1,6 +1,6 @@
 {
   "name": "node-express-api-mockup-data-boilerplate",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Express API Mockup Data Boilerplate",
   "author": "Ricky Hurtado",
   "license": "UNLICENSED",
@@ -13,19 +13,19 @@
   },
   "homepage": "https://github.com/anthub-services/node-express-api-mockup-data-boilerplate/tree/master",
   "dependencies": {
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "dotenv": "^5.0.1",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "jsonwebtoken": "^8.2.1",
-    "moment": "^2.22.0",
+    "jsonwebtoken": "^8.3.0",
+    "moment": "^2.22.2",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "nodemon": "^1.17.3",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.1",
     "sequelize-cli": "^4.0.0"
   },
   "scripts": {
